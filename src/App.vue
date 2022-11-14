@@ -2,13 +2,15 @@
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 import HelloWorld from './components/HelloWorld.vue';
-import { useAPI } from './api';
+// import { useAPI } from './api';
+import useAPI from './api';
 import { ref } from 'vue';
 const pokemon = ref(null)
 
 async function testko() {
   console.log('testko');
-  const {
+
+  const { 
     data,
     error,
     abort,
@@ -17,7 +19,7 @@ async function testko() {
     isFinished,
     canAbort,
     execute,
-  } = await useAPI('pokemon/ditto');
+  } = await useAPI.getaj('pokemon', {limit: 10, offset: 2})
 
   console.log('data', data);
   pokemon.value = JSON.parse(data.value);
@@ -27,9 +29,8 @@ async function testko() {
 <template>
   <img @click="testko" alt="Vue logo" src="./assets/logo.png" />
   <HelloWorld msg="Hello Vue 3 + Vite" />
-  <pre>
-  {{pokemon.name}}
-  {{pokemon.abilities}}
+  <pre v-if="pokemon">
+  {{pokemon}}
 
   </pre>
 </template>
