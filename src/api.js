@@ -32,6 +32,12 @@ var API = createFetch({
       // 1) otkazati prvi call --> zvati refresh --> ponoviti prvi call kada refresh zavrsi
       // 2) prvi call (i sve iduće) staviti na queue  ---> zvati refresh ---> ponoviti sve što se nalazi u queue, no tu postoje još neke zamke
       // 3) blokirati prvi call (tako da se u beforeFetch interceptoru awaita refresh, te zamijeni stari token i expiresAt s novima)
+      // problem koji bi se mogao prijaviti u svim slucajevima: sto ako refresh traje a korisnik dalje klika po appu - to moze dovesti do nekoliko refreshova da se paralelno odvijaju
+      // možda bi nekako trebalo staviti overlay s loadingom dok refresh traje, ako to već postoji u appi
+      // obavezno whitelistati pipe za koje ne treba gledati expires at i provoditi svu ovu logiku: login, refresh, logout, register, 2fa, forgot password, verify url...
+      // ne zaboraviti dodati ovu logiku u beforeEach od routera, kako bi se ovo provodilo i kod šaltanja stranica
+      // opet pripaziti, jer često kod promjene stranica automatski dolazi poziv neke pipe, što može triggerirati 2 refresha
+      // pametno bi možda bilo pratiti u pinji je li refresh pending, i ako je, onda ne treba ga pozivati drugi put 
 
       options.headers = {
         ...options.headers,
