@@ -78,21 +78,20 @@ var API = createFetch({
 });
 
 const useAPI = {
-  async getaj(url, payload = undefined) {
-    if (payload) {
-      url = url + '?' + serialize(payload)
-    }
+  async get(url, payload = undefined) {
+    if (payload)
+      url = `${url}?${serialize(payload)}`
     return await API(url)
   },
-  async postaj(url, payload = undefined) {
-    return await API(url, payload)
+  async post(url, payload = undefined) {
+    return await API(url).post(payload).json()
   },
-  async putaj(url, payload = undefined) {
-    return await API(url, payload)
+  async put(url, payload = undefined) {
+    return await API(url).put(payload).json()
   },
-  async deletaj(url, payload = undefined) {
-    return await API(url, payload)
-  }
+  async delete(url, payload = undefined) {
+    return await API(url).delete(payload).json()
+  },
 }
 
 export default useAPI
